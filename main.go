@@ -69,8 +69,29 @@ func deleteMovie(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(movies)
 }
 
+// update movie
+func updateMovie(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for index, movie := range movies {
+		if movie.ID == params["id"] {
+			movies = append(movies[:index], movies[index+1:]...) //delete the movie
+			var movie Movie
+			_ = json.NewDecoder(r.Body).Decode(&movie)
+			movie.ID = params["id"]
+			movies = append(movies, movie)
+			json.NewEncoder(w).Encode(movie)
+			return
+		}
+	}
+}
+
 func main() {
 	router := mux.NewRouter()
+
+	movies = append(movies, Movie{ID: "1", Isbn: "787439", Title: "Titanic", Director: &Director{Firstname: "James", Lastname: "Cameron"}})
+	movies = append(movies, Movie{ID: "2", Isbn: "278028", Title: "Batman Begins", Director: &Director{Firstname: "Christopher", Lastname: "Nolan"}})
+	movies = append(movies, Movie{ID: "3", Isbn: "163092", Title: "Commando", Director: &Director{Firstname: "Mark", Lastname: "Lester"}})
 
 	router.HandleFunc("/movies", getAllMovies).Methods("GET")
 	router.HandleFunc("/movies/{id}", getMovie).Methods("GET")
