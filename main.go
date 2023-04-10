@@ -30,6 +30,19 @@ func getAllMovies(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// get a movie by id
+func getMovie(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-Type", "application/json")
+	params := mux.Vars(r)
+	for _, movie := range movies {
+		if movie.ID == params["id"] {
+			json.NewEncoder(w).Encode(movie)
+			return
+		}
+	}
+
+}
+
 // Delete a movie
 func deleteMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-Type", "application/json")
@@ -40,6 +53,7 @@ func deleteMovie(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
+	json.NewEncoder(w).Encode(movies)
 }
 
 func main() {
