@@ -99,7 +99,7 @@ func main() {
 	router.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
 	router.HandleFunc("/movies/{id}", deleteMovie).Methods("DELETE")
 
-	log.Fatal(http.ListenAndServe(":8000", router))
 	fmt.Printf("Server is running on port 8000\n")
+	log.Fatal(http.ListenAndServe(":8000", router))
 
 }

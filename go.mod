@@ -1,4 +1,4 @@
-module example/hello
+module example/Movie
 
 go 1.20
 
